@@ -1,8 +1,9 @@
 # Imports
 import argparse
 import csv
-from datetime import date, timedelta, datetime
+from datetime import datetime
 from buy_func import buy_product
+from date_func import advance_time, date_now
 
 # from buy_func import buy_product
 
@@ -13,32 +14,6 @@ __human_name__ = "superpy"
 
 # Your code below this line.
 def main():
-    # date of "realtime-now"
-    def date_now(args):
-        today = date.today()
-        date_today = datetime.strftime(today, "%Y-%m-%d")
-        with open("date_file.txt", "w") as date_file:
-            date_file.write(date_today)
-            print(f"This is the real-time date of 'today': {date_today}")
-
-    # advanced-time
-    def advance_time(args):
-        with open("date_file.txt", "r") as date_file:
-            for line in date_file:
-                old_date = datetime.strptime(line, "%Y-%m-%d")
-                delta = timedelta(days=args.advance_time[0])
-                new_date = datetime.strftime((old_date + delta), "%Y-%m-%d")
-                print(f"this is the advance time of 'today', {new_date}")
-            # now write new_date to date_file.txt file
-            with open("date_file.txt", "w") as file:
-                file.write(new_date)
-
-    # get current date in date_file.txt
-    def get_date():
-        with open("date_file.txt", "r") as date_file:
-            for line in date_file:
-                print("get date", line)
-                return line
 
     # check if date is valid format yyyy-mm-dd
     def valid_date(date_str):
@@ -47,34 +22,6 @@ def main():
         except ValueError:
             msg = "Not a valid date: '{0}'.".format(date_str)
             raise argparse.ArgumentTypeError(msg)
-
-    # def buy_product(args):
-    #     with open("bought.csv", "a", newline="") as bought_file:
-    #         fieldnames = [
-    #             # "product_id",
-    #             "product_name",
-    #             "buy_price",
-    #             "amount",
-    #             "buy_date",
-    #             "expiration_date",
-    #         ]
-    #         csv_writer = csv.DictWriter(bought_file, fieldnames=fieldnames)
-    #         for i in range(args.amount):
-    #             csv_writer.writerow(
-    #                 {
-    #                     # product_id nog aanpassen
-    #                     # "product_id":
-    #                     "product_name": args.product_name[0],
-    #                     "buy_price": args.price[0],
-    #                     "amount": 1,
-    #                     "buy_date": get_date(),
-    #                     "expiration_date": args.expiration_date,
-    # of ....
-    #                     "expiration_date": args.expiration_date.date(),
-
-    #                 }
-    #             )
-    #     print(f"product bought: {args.product_name}")
 
     ## argparse gedeelte ####
     parser = argparse.ArgumentParser(
