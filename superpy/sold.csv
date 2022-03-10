@@ -1,1 +1,4 @@
 product_id,product_name,sell_price,amount,sell_date
+1,bread,3.95,1,2022-03-10
+11,soup,1.27,1,2022-03-10
+10,soup,1.95,1,2022-03-10

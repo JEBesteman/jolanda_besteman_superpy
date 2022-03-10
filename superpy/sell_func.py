@@ -41,11 +41,12 @@ def get_available_product(product_name):
     if len(available_products) == 0:
         print(f"Sorry, there are no available items found for {product_name}.")
     else:
-        # sorteren op expiration date
+        # # sorteren op expiration date
         available_products_sorted = sorted(
             available_products, key=lambda x: x["expiration_date"]
         )
         return available_products_sorted
+        # return available_products
 
 
 # print(get_available_product("bread"))
@@ -59,14 +60,21 @@ def sell_item(product_name, amount, sell_price):
             )
         else:
             for item in available_products:
+                print(item)
                 if item["expiration_date"] == today:
+                    print(today)
+                    print(item["expiration_date"])
                     print("you get discount of 35% on original sell price")
                     sell_price *= 0.65
                     sell_price = float(round(sell_price, 2))
                     print(f"new sell_price is {sell_price}")
+                    break
                 else:
+                    print(today)
+                    print(item["expiration_date"])
                     sell_price = sell_price
-                    # toevoegen aan sold.csv file
+                    print(f"hier is price: {sell_price}")
+            # toevoegen aan sold.csv file
         with open("sold.csv", "a", newline="") as sold_file:
             fieldnames = [
                 "product_id",
@@ -89,4 +97,4 @@ def sell_item(product_name, amount, sell_price):
             print(f"product bought: {product_name} for {sell_price}.")
 
 
-sell_item("soup", 1, 1.99)
+sell_item("soup", 1, 1.95)
