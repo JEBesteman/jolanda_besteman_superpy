@@ -26,5 +26,5 @@ def advance_time(args):
 def get_date_today():
     with open("date_file.txt", "r") as date_file:
         for line in date_file:
-            print("get date", line)
+            # print("get date", line)
             return line

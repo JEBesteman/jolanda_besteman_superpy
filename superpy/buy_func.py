@@ -30,7 +30,7 @@ def buy_product(args):
             csv_writer.writerow(
                 {
                     "product_id": get_product_id("bought.csv") + i,
-                    "product_name": args.product_name[0],
+                    "product_name": args.product_name[0].lower(),
                     "buy_price": args.price[0],
                     "amount": 1,
                     "buy_date": get_date_today(),
