@@ -7,7 +7,6 @@ You can only sell product on date "today"
 You get a discount of 30% when you sell product on its expiration date
 """
 import csv
-from math import prod
 from date_func import get_date_today
 
 
@@ -49,6 +48,7 @@ def get_available_product(product_name):
         return available_products_sorted
 
 
+# print(get_available_product("bread"))
 def sell_item(product_name, amount, sell_price):
     today = get_date_today()
     available_products = get_available_product(product_name)
@@ -58,35 +58,35 @@ def sell_item(product_name, amount, sell_price):
                 f"Sorry, there are not enough items of {product_name} to buy, only {len(available_products)} item(s) left!"
             )
         else:
-            with open("sold.csv", "a", newline="") as sold_file:
-                fieldnames = [
-                    "product_id",
-                    "product_name",
-                    "sell_price",
-                    "amount",
-                    "sell_date",
-                ]
-                csv_writer = csv.DictWriter(sold_file, fieldnames=fieldnames)
-                for item in available_products:
-                    if item["expiration_date"] == today:
-                        print("you get discount of 35% on original sell price")
-                        sell_price *= 0.65
-                        sell_price = float(round(sell_price, 2))
-                        print(f"new sell_price is {sell_price}")
-                    else:
-                        sell_price = sell_price
-                        # toevoegen aan sold.csv file
-                        for i in range(amount):
-                            csv_writer.writerow(
-                                {
-                                    "product_id": available_products[i]["product_id"],
-                                    "product_name": product_name,
-                                    "sell_price": sell_price,
-                                    "amount": 1,
-                                    "sell_date": today,
-                                }
-                            )
-                print(f"product bought: {product_name} for {sell_price}.")
+            for item in available_products:
+                if item["expiration_date"] == today:
+                    print("you get discount of 35% on original sell price")
+                    sell_price *= 0.65
+                    sell_price = float(round(sell_price, 2))
+                    print(f"new sell_price is {sell_price}")
+                else:
+                    sell_price = sell_price
+                    # toevoegen aan sold.csv file
+        with open("sold.csv", "a", newline="") as sold_file:
+            fieldnames = [
+                "product_id",
+                "product_name",
+                "sell_price",
+                "amount",
+                "sell_date",
+            ]
+            csv_writer = csv.DictWriter(sold_file, fieldnames=fieldnames)
+            for i in range(amount):
+                csv_writer.writerow(
+                    {
+                        "product_id": available_products[i]["product_id"],
+                        "product_name": product_name,
+                        "sell_price": sell_price,
+                        "amount": 1,
+                        "sell_date": today,
+                    }
+                )
+            print(f"product bought: {product_name} for {sell_price}.")
 
 
 sell_item("soup", 1, 1.99)
