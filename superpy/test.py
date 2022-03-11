@@ -5,6 +5,8 @@ import datetime
 today_string = get_date_today()
 print(today_string)
 exp_string = "2022-03-09"
+date_object = datetime.date.fromisoformat(today_string)
+print(date_object)
 
 
 def string_to_dateobj(string):

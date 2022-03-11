@@ -7,6 +7,7 @@ You can only sell product on date "today"
 You get a discount of 30% when you sell product on its expiration date
 """
 import csv
+import pprint
 from date_func import get_date_today
 
 
@@ -21,7 +22,6 @@ def get_sold_ids():
     with open("sold.csv", "r") as sold_file:
         csv_reader = csv.DictReader(sold_file)
         sold_ids = [row["product_id"] for row in csv_reader]
-        # print(sold_ids)
         return sold_ids
 
 
@@ -32,6 +32,7 @@ def get_available_product(product_name):
     available_products = []
     today = get_date_today()
     for item in bought_items:
+        # print(item["expiration_date"])
         if (
             item["product_id"] not in sold_ids
             and item["product_name"] == product_name
@@ -41,18 +42,17 @@ def get_available_product(product_name):
     if len(available_products) == 0:
         print(f"Sorry, there are no available items found for {product_name}.")
     else:
-        # # sorteren op expiration date
+        # sorteren op expiration date
         available_products_sorted = sorted(
             available_products, key=lambda x: x["expiration_date"]
         )
         return available_products_sorted
-        # return available_products
 
 
-# print(get_available_product("bread"))
 def sell_item(product_name, amount, sell_price):
     today = get_date_today()
     available_products = get_available_product(product_name)
+    products_to_sell = []
     if available_products:
         if amount > len(available_products):
             print(
@@ -60,21 +60,19 @@ def sell_item(product_name, amount, sell_price):
             )
         else:
             for item in available_products:
-                print(item)
+
                 if item["expiration_date"] == today:
-                    print(today)
-                    print(item["expiration_date"])
-                    print("you get discount of 35% on original sell price")
-                    sell_price *= 0.65
-                    sell_price = float(round(sell_price, 2))
-                    print(f"new sell_price is {sell_price}")
-                    break
+                    # pas de korting toe en voeg een 'sell price' key toe aan je dict.
+                    item["sell_price"] = float(round(sell_price * 0.65, 2))
+                    item["sell_date"] = today
                 else:
-                    print(today)
-                    print(item["expiration_date"])
-                    sell_price = sell_price
-                    print(f"hier is price: {sell_price}")
-            # toevoegen aan sold.csv file
+                    # als niet today dan sell_price is die je geeft als argument in de functie
+                    item["sell_price"] = sell_price
+                    item["sell_date"] = today
+                products_to_sell.append(item)  # voeg altijd item toe aan lijst
+
+        # toevoegen aan sold.csv file
+        pprint.pprint(products_to_sell)
         with open("sold.csv", "a", newline="") as sold_file:
             fieldnames = [
                 "product_id",
@@ -82,19 +80,14 @@ def sell_item(product_name, amount, sell_price):
                 "sell_price",
                 "amount",
                 "sell_date",
+                "expiration_date",
+                "product_price",
+                "buy_date",
             ]
+
             csv_writer = csv.DictWriter(sold_file, fieldnames=fieldnames)
-            for i in range(amount):
-                csv_writer.writerow(
-                    {
-                        "product_id": available_products[i]["product_id"],
-                        "product_name": product_name,
-                        "sell_price": sell_price,
-                        "amount": 1,
-                        "sell_date": today,
-                    }
-                )
-            print(f"product bought: {product_name} for {sell_price}.")
+            csv_writer.writerows(products_to_sell)  # voeg de hele lijst toe aan je csv
 
 
-sell_item("soup", 1, 1.95)
+sell_item(product_name="soup", amount=2, sell_price=1.95)
+# sell_item("eggs", 1, 2.75)
