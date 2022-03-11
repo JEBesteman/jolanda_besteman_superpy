@@ -4,6 +4,7 @@ import csv
 from datetime import datetime
 from buy_func import buy_product
 from date_func import advance_time, date_now
+from sell_func import sell_item
 
 # from buy_func import buy_product
 
@@ -67,6 +68,21 @@ def main():
         help="set expiration date of bought product in yyyy-mm-dd",
     )
     buy_parser.set_defaults(func=buy_product)
+
+    ## argparser for sell
+    ##product_name, sell_price, amount(optional, default 1)
+    sell_parser = subparsers.add_parser("sell")
+    sell_parser.add_argument("product_name", nargs=1, help="set product name")
+    sell_parser.add_argument(
+        "sell_price", type=float, nargs=1, help="set product sell price"
+    )
+    sell_parser.add_argument(
+        "--amount_item",
+        type=int,
+        default=1,
+        help="set amount of sold product (default: 1)",
+    )
+    sell_parser.set_defaults(func=sell_item)
 
     args = parser.parse_args()
     print(args)

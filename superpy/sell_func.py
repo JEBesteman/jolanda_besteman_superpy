@@ -46,30 +46,43 @@ def get_available_product(product_name):
         available_products_sorted = sorted(
             available_products, key=lambda x: x["expiration_date"]
         )
+        print(available_products)
         return available_products_sorted
 
 
-def sell_item(product_name, amount, sell_price):
+def sell_item(args):
     today = get_date_today()
-    available_products = get_available_product(product_name)
+    # available_products = get_available_product(
+    #     args.product_name[0].lower()
+    # )  # args.product_name
+    available_products = get_available_product(
+        args.product_name[0].lower()
+    )  # args.product_name
     products_to_sell = []
+    count = 0
+
     if available_products:
-        if amount > len(available_products):
+        print(args.amount_item)
+        if args.amount_item > len(available_products):  # if args.mount
             print(
-                f"Sorry, there are not enough items of {product_name} to buy, only {len(available_products)} item(s) left!"
+                f"Sorry, there are not enough items of {args.product_name} to buy, only {len(available_products)} item(s) left!"
             )
         else:
             for item in available_products:
-
+                if count >= args.amount_item:
+                    break
                 if item["expiration_date"] == today:
                     # pas de korting toe en voeg een 'sell price' key toe aan je dict.
-                    item["sell_price"] = float(round(sell_price * 0.65, 2))
+                    item["sell_price"] = float(round(args.sell_price[0] * 0.65, 2))
                     item["sell_date"] = today
                 else:
                     # als niet today dan sell_price is die je geeft als argument in de functie
-                    item["sell_price"] = sell_price
+                    item["sell_price"] = args.sell_price[0]  # args.sell_price
                     item["sell_date"] = today
-                products_to_sell.append(item)  # voeg altijd item toe aan lijst
+
+                # voeg altijd item toe aan lijst
+                products_to_sell.append(item)
+                count += 1
 
         # toevoegen aan sold.csv file
         pprint.pprint(products_to_sell)
@@ -86,8 +99,12 @@ def sell_item(product_name, amount, sell_price):
             ]
 
             csv_writer = csv.DictWriter(sold_file, fieldnames=fieldnames)
+            print(args.amount_item)
             csv_writer.writerows(products_to_sell)  # voeg de hele lijst toe aan je csv
 
 
-sell_item(product_name="soup", amount=2, sell_price=1.95)
-# sell_item("eggs", 1, 2.75)
+# sell_item(product_name="soup", amount_item=2, sell_price=1.95)
+# sell_item("Eggs", 1, 2.75)
+# sell_item("Bread", 1, 3.10)
+# sell_item(product_name="oatmeal", amount_item=3, sell_price=1.95)
+# sell_item(product_name="Eggs", amount_item=1, sell_price=2.75)
