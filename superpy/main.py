@@ -1,12 +1,12 @@
 # Imports
 import argparse
-import csv
-from datetime import datetime
+
+# from datetime import datetime
 from buy_func import buy_product
 from date_func import advance_time, date_now
 from sell_func import sell_item
+import datetime
 
-# from buy_func import buy_product
 
 # Do not change these lines.
 __winc_id__ = "a2bc36ea784242e4989deb157d527ba0"

@@ -28,3 +28,9 @@ def get_date_today():
         for line in date_file:
             # print("get date", line)
             return line
+
+
+# to convert string to datetime object -> to compare dates better
+def string_to_dateobj(date_str):
+    date_object = date.fromisoformat(date_str)
+    return date_object
