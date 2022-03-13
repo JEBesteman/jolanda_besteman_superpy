@@ -4,11 +4,12 @@ Uses the product_id to check if bought_item is already sold
 (product_id is both class str!)
 Sorted so that the earliest expiration date will be bought first
 You can only sell product on date "today"
-You get a discount of 30% when you sell product on its expiration date
+You get a discount of 35% when you sell product on its expiration date
 """
 import csv
 import pprint
 from date_func import get_date_today, string_to_dateobj
+from datetime import datetime
 
 
 def get_bought_items():
@@ -55,7 +56,6 @@ def sell_item(args):
     today_date_obj = string_to_dateobj(today)
     available_products = get_available_product(args.product_name[0].lower())
     products_to_sell = []
-    count = 0
 
     if available_products:
         if args.amount_item > len(available_products):
@@ -65,20 +65,17 @@ def sell_item(args):
         else:
             for item in available_products:
                 exp_date_obj = string_to_dateobj(item["expiration_date"])
-                if count >= args.amount_item:
-                    break
                 if exp_date_obj == today_date_obj:
                     # pas de korting toe en voeg een 'sell price' key toe aan je dict.
                     item["sell_price"] = float(round(args.sell_price[0] * 0.65, 2))
                     item["sell_date"] = today
                 else:
                     # als niet today dan sell_price is die je geeft als argument in de functie
-                    item["sell_price"] = args.sell_price[0]  # args.sell_price
+                    item["sell_price"] = args.sell_price[0]
                     item["sell_date"] = today
 
                 # voeg altijd item toe aan lijst
                 products_to_sell.append(item)
-                count += 1
 
         # toevoegen aan sold.csv file
         pprint.pprint(products_to_sell)
@@ -90,12 +87,13 @@ def sell_item(args):
                 "amount",
                 "sell_date",
                 "expiration_date",
-                "product_price",
+                "buy_price",
                 "buy_date",
             ]
 
             csv_writer = csv.DictWriter(sold_file, fieldnames=fieldnames)
-            csv_writer.writerows(products_to_sell)  # voeg de hele lijst toe aan je csv
+            csv_writer.writerows(products_to_sell[: args.amount_item])
+            # voeg de hele lijst toe aan je csv, rekening houdend met amount sell items of product
 
 
 # sell_item(product_name="soup", amount_item=2, sell_price=1.95)

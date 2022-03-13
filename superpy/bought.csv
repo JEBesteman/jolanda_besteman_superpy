@@ -1,4 +1,4 @@
-product_id,product_name,product_price,amount,buy_date,expiration_date
+product_id,product_name,buy_price,amount,buy_date,expiration_date
 1,bread,2.55,1,2022-03-09,2022-03-12
 2,bread,2.55,1,2022-03-09,2022-04-09
 3,eggs,2.25,1,2022-03-09,2022-03-31
@@ -13,3 +13,11 @@ product_id,product_name,product_price,amount,buy_date,expiration_date
 12,soup,1.0,1,2022-03-08,2023-12-24
 13,oatmeal,0.65,1,2022-03-09,2023-10-24
 14,eggs,2.25,1,2022-03-09,2022-03-31
+15,rabbit_ears,3.25,1,2022-03-10,2023-02-07
+16,rabbit_ears,3.25,1,2022-03-10,2023-02-07
+17,rabbit_ears,3.25,1,2022-03-10,2023-02-07
+18,toothpaste,0.45,1,2022-03-10,2024-12-31
+19,toothpaste,0.45,1,2022-03-10,2024-12-31
+20,toothpaste,0.45,1,2022-03-10,2024-12-31
+21,toothpaste,0.45,1,2022-03-10,2024-12-31
+22,yoghurt,0.49,1,2022-03-11,2022-03-22

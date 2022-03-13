@@ -1,11 +1,10 @@
 # Imports
 import argparse
 
-# from datetime import datetime
+from datetime import datetime
 from buy_func import buy_product
 from date_func import advance_time, date_now
 from sell_func import sell_item
-import datetime
 
 
 # Do not change these lines.
@@ -57,15 +56,15 @@ def main():
     buy_parser.add_argument("product_name", nargs=1, help="set product name")
     buy_parser.add_argument("price", type=float, nargs=1, help="set product buy price")
     buy_parser.add_argument(
+        "expiration_date",
+        type=valid_date,
+        help="set expiration date of bought product in yyyy-mm-dd",
+    )
+    buy_parser.add_argument(
         "--amount",
         type=int,
         default=1,
         help="set amount of bought product (default: 1)",
-    )
-    buy_parser.add_argument(
-        "expiration_date",
-        type=valid_date,
-        help="set expiration date of bought product in yyyy-mm-dd",
     )
     buy_parser.set_defaults(func=buy_product)
 
