@@ -4,12 +4,12 @@ Uses the product_id to check if bought_item is already sold
 (product_id is both class str!)
 Sorted so that the earliest expiration date will be bought first
 You can only sell product on date "today"
-You get a discount of 35% when you sell product on its expiration date
+Extra check that buy_date is on "today" or before, because advance_time can set "today" in future.
+You give a discount of 35% when you sell product on its expiration date
 """
 import csv
 import pprint
 from date_func import get_date_today, string_to_dateobj
-from datetime import datetime
 
 
 def get_bought_items():
@@ -35,9 +35,11 @@ def get_available_product(product_name):
     today_date_obj = string_to_dateobj(today)
     for item in bought_items:
         exp_date_obj = string_to_dateobj(item["expiration_date"])
+        buy_date_obj = string_to_dateobj(item["buy_date"])
         if (
             item["product_id"] not in sold_ids
             and item["product_name"] == product_name
+            and buy_date_obj <= today_date_obj
             and exp_date_obj >= today_date_obj
         ):
             available_products.append(item)
@@ -67,7 +69,7 @@ def sell_item(args):
                 exp_date_obj = string_to_dateobj(item["expiration_date"])
                 if exp_date_obj == today_date_obj:
                     # pas de korting toe en voeg een 'sell price' key toe aan je dict.
-                    item["sell_price"] = float(round(args.sell_price[0] * 0.65, 2))
+                    item["sell_price"] = round(args.sell_price[0] * 0.65, 2)
                     item["sell_date"] = today
                 else:
                     # als niet today dan sell_price is die je geeft als argument in de functie
@@ -78,7 +80,7 @@ def sell_item(args):
                 products_to_sell.append(item)
 
         # toevoegen aan sold.csv file
-        pprint.pprint(products_to_sell)
+        pprint.pprint(products_to_sell[: args.amount_item])
         with open("sold.csv", "a", newline="") as sold_file:
             fieldnames = [
                 "product_id",
