@@ -1,7 +1,7 @@
-from date_func import get_date_today
+from date_func import get_date_today, string_to_dateobj
 
 # import datetime
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 
 # today_string = get_date_today()
 # print(today_string)
@@ -78,3 +78,25 @@ print(one_product)
 #     product.pop("buy_date")
 #     del product["product_price"]
 #     print(product)
+
+print("*****")
+## testen now, yesterday, specific date
+now = get_date_today()
+print(now)
+print(type(now))
+
+# yesterdag
+delta1 = timedelta(days=1)
+yesterday = string_to_dateobj(now) - delta1
+print(yesterday)
+print(type(yesterday))
+
+# specific date --> check valid_date in argparse
+input_date = "2022-03-08"
+input_date_obj = string_to_dateobj(input_date)
+print(type(input_date_obj))
+print(input_date_obj)
+
+date = datetime(2022, 3, 9, 0, 0)
+date_str = date.strftime("%Y-%m-%d")
+print(date_str)

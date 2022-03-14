@@ -2,9 +2,11 @@
 import argparse
 
 from datetime import datetime
+from pydoc import describe
 from buy_func import buy_product
 from date_func import advance_time, date_now
 from sell_func import sell_item
+from inventory_func import short_inventory
 
 
 # Do not change these lines.
@@ -83,6 +85,26 @@ def main():
     )
     sell_parser.set_defaults(func=sell_item)
 
+    # parser for short_inventory
+    short_inventory_parser = subparsers.add_parser(
+        "short_inventory",
+        description="this is a short inventory, [product_name] [count]",
+    )
+    short_inventory_parser.add_argument(
+        "--now", action="store_true", help="set date for short inventory to 'today'"
+    )
+    short_inventory_parser.add_argument(
+        "--yesterday",
+        action="store_true",
+        help="set date for short inventory to yesterday",
+    )
+    short_inventory_parser.add_argument(
+        "--date",
+        type=valid_date,
+        nargs=1,
+        help="set date of short inventory on specific date. Enter date: yyyy-mm-dd",
+    )
+    short_inventory_parser.set_defaults(func=short_inventory)
     args = parser.parse_args()
     print(args)
     # date_now()

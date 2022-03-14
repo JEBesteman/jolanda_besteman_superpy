@@ -8,13 +8,14 @@ I make 2 versions of inventiory:
         Show all product information, sorted on product_name
 """
 import csv
+from datetime import timedelta
 from date_func import get_date_today, string_to_dateobj
 from sell_func import get_bought_items, get_sold_ids
 from pprint import pprint
 
 
 # krijg je alle producten die op bepaalde datum gekocht zijn, maar niet verkocht en niet verlopen
-def get_available_products(datum):
+def get_available_products(datum):  # datum_str
     bought_items = get_bought_items()
     sold_ids = get_sold_ids()
     available_products = []
@@ -41,9 +42,25 @@ def get_available_products(datum):
 
 # short_inventory: van alle producten hoeveel aantal op voorrad
 # -> product_name, count
+## different datetime_objects, now(today), yesterday, (specific)date -> zie test.py
 
 
-def short_inventory(datum):
+def short_inventory(args):
+    if args.now is True:
+        datum = get_date_today()
+        # datum = string_to_dateobj(now)
+    if args.date:
+        # datum_obj = args.date[0].date()  # datetime.date object
+        datum_obj = args.date[0]  # datetime.datetime object
+        # print(type(datum_obj))
+        datum = datum_obj.strftime("%Y-%m-%d")
+        # print(type(datum))
+    if args.yesterday:
+        now = get_date_today()
+        delta1 = timedelta(days=1)
+        datum_obj = string_to_dateobj(now) - delta1
+        # print(type(datum_obj))
+        datum = datum_obj.strftime("%Y-%m-%d")
     products = get_available_products(datum)
     inventory = {}
     for product in products:
@@ -51,8 +68,7 @@ def short_inventory(datum):
             inventory[product["product_name"]] += 1
         else:
             inventory.update({product["product_name"]: 1})
-    # print(inventory)
-    # print(type(inventory))
+        pprint(inventory)
 
     with open((f"short_inventory_{datum}.csv"), "w", newline="") as short_file:
         fieldnames = ["product_name", "count"]
@@ -63,6 +79,7 @@ def short_inventory(datum):
 
 
 # short_inventory(datum="2022-03-14")
+
 
 # alle informatie van de producten in inventory
 def long_inventory(datum):
