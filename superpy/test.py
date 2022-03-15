@@ -100,3 +100,31 @@ print(input_date_obj)
 date = datetime(2022, 3, 9, 0, 0)
 date_str = date.strftime("%Y-%m-%d")
 print(date_str)
+
+print("______")
+
+
+def change_day(number=None):
+    now = get_date_today()
+    print(type(now))
+    now_object = string_to_dateobj(now)
+    print(now_object)
+    # delta = timedelta(days=number)
+    # return string_to_dateobj(now) + delta
+
+
+change_day(0)
+# now number =0
+# datum = change_day(0)
+# print(datum)
+# print(type(datum))
+
+nu = get_date_today()
+
+
+def string_to_dateobj(date_str):
+    date_object = date.fromisoformat(date_str)
+    return date_object
+
+
+print(string_to_dateobj(nu))

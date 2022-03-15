@@ -67,6 +67,7 @@ def sell_item(args):
         else:
             for item in available_products:
                 exp_date_obj = string_to_dateobj(item["expiration_date"])
+                print(type(exp_date_obj))
                 if exp_date_obj == today_date_obj:
                     # pas de korting toe en voeg een 'sell price' key toe aan je dict.
                     item["sell_price"] = round(args.sell_price[0] * 0.65, 2)

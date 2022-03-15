@@ -34,3 +34,10 @@ def get_date_today():
 def string_to_dateobj(date_str):
     date_object = date.fromisoformat(date_str)
     return date_object
+
+
+# to convert and change date in now(number=0), yesterday(number=-1) with timedelta
+def change_day(number=None):
+    now = get_date_today()
+    delta = timedelta(days=number)
+    return string_to_dateobj(now) + delta
