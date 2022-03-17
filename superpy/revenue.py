@@ -38,31 +38,29 @@ later aangeven of het voor revenue gebruikt, type_report == revenue
 
 
 def show_revenue(args, type_report="revenue"):
+    print(type_report)
     if args.now:
         datum = change_day(0)
         revenue = get_revenue_date(datum)
-        print(revenue)
     if args.yesterday:
         datum = change_day(-1)
         revenue = get_revenue_date(datum)
-        print(revenue)
     if args.date:
         datum = args.date[0].date()
         revenue = get_revenue_date(datum)
-        print(revenue)
     if args.period:
         datum1 = args.period[0].date()
         datum2 = args.period[1].date()
         revenue = get_revenue_between_dates(datum1, datum2)
-        print(revenue)
     if type_report == "revenue":
         if args.now:
-            print(f"The revenue of {datum} is {revenue}")
+            print(f"The revenue for {datum} is {revenue}")
         if args.yesterday:
-            print(f"The revenue of {datum} is {revenue}")
+            print(f"The revenue for {datum} is {revenue}")
         if args.date:
-            print(f"The revenue of {datum} is {revenue}")
+            print(f"The revenue for {datum} is {revenue}")
         if args.period:
             print(
-                f"The revenue in periode from {datum1} to including {datum2} is {revenue}"
+                f"The revenue for periode from {datum1} to including {datum2} is {revenue}"
             )
+    return revenue

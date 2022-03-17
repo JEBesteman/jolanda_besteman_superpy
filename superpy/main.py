@@ -7,6 +7,7 @@ from sell_func import sell_item
 from inventory_func import short_inventory, long_inventory
 from expired_func import show_expired_products
 from revenue import show_revenue
+from profit import get_profit
 
 
 # Do not change these lines.
@@ -140,7 +141,7 @@ def main():
     # parser for revenue
     revenue_parser = subparsers.add_parser(
         "revenue",
-        description="shows revenue of date or period",
+        description="shows revenue for date or period",
     )
     revenue_parser.add_argument(
         "--now", action="store_true", help="set date to 'today'"
@@ -163,6 +164,31 @@ def main():
         help="choose period, [date1] - [date2], including both dates. Please enter dates: yyyy-mm-dd",
     )
     revenue_parser.set_defaults(func=show_revenue)
+
+    # parser for profit
+    profit_parser = subparsers.add_parser(
+        "profit",
+        description="shows profit for date or period",
+    )
+    profit_parser.add_argument("--now", action="store_true", help="set date to 'today'")
+    profit_parser.add_argument(
+        "--yesterday",
+        action="store_true",
+        help="set date to yesterday",
+    )
+    profit_parser.add_argument(
+        "--date",
+        type=valid_date,
+        nargs=1,
+        help="set date on specific date. Please enter date: yyyy-mm-dd",
+    )
+    profit_parser.add_argument(
+        "--period",
+        type=valid_date,
+        nargs=2,
+        help="choose period, [date1] - [date2], including both dates. Please enter dates: yyyy-mm-dd",
+    )
+    profit_parser.set_defaults(func=get_profit)
 
     args = parser.parse_args()
     print(args)
