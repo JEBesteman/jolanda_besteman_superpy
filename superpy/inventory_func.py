@@ -11,7 +11,7 @@ import csv
 from date_func import string_to_dateobj, change_day
 from sell_func import get_bought_items, get_sold_ids
 
-# from pprint import pprint
+from pprint import pprint
 
 # krijg je alle producten die op bepaalde datum gekocht zijn, maar niet verkocht en niet verlopen
 # datetime.date object mee gegeven
@@ -53,7 +53,7 @@ def short_inventory(args):
             inventory[product["product_name"]] += 1
         else:
             inventory.update({product["product_name"]: 1})
-        # pprint(inventory)
+    pprint(inventory)
 
     with open((f"short_inventory_{datum}.csv"), "w", newline="") as short_file:
         fieldnames = ["product_name", "count"]
@@ -72,6 +72,7 @@ def long_inventory(args):
     if args.yesterday:
         datum = change_day(-1)
     products = get_available_products(datum)
+    pprint(products)
     with open((f"long_inventory_{datum}.csv"), "w", newline="") as long_file:
         fieldnames = [
             "product_id",

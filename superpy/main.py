@@ -5,6 +5,8 @@ from buy_func import buy_product
 from date_func import advance_time, date_now
 from sell_func import sell_item
 from inventory_func import short_inventory, long_inventory
+from expired_func import show_expired_products
+from revenue import show_revenue
 
 
 # Do not change these lines.
@@ -69,7 +71,7 @@ def main():
     buy_parser.set_defaults(func=buy_product)
 
     ## argparser for sell
-    ##product_name, sell_price, amount(optional, default 1)
+    ##product_name, sell_price, amount(optional, default 1), can sell max 3 items at once!!
     sell_parser = subparsers.add_parser("sell")
     sell_parser.add_argument("product_name", nargs=1, help="set product name")
     sell_parser.add_argument(
@@ -79,6 +81,7 @@ def main():
         "--amount_item",
         type=int,
         default=1,
+        choices=range(1, 4),
         help="set amount of sold product (default: 1)",
     )
     sell_parser.set_defaults(func=sell_item)
@@ -124,6 +127,42 @@ def main():
         help="set date of long inventory on specific date. Please enter date: yyyy-mm-dd",
     )
     long_inventory_parser.set_defaults(func=long_inventory)
+
+    # parser for show_expired_products
+    expired_parser = subparsers.add_parser(
+        "expired", description="shows the expired products till 'today'"
+    )
+    expired_parser.add_argument(
+        "--txt", action="store_true", help="exports to txt.file"
+    )
+    expired_parser.set_defaults(func=show_expired_products)
+
+    # parser for revenue
+    revenue_parser = subparsers.add_parser(
+        "revenue",
+        description="shows revenue of date or period",
+    )
+    revenue_parser.add_argument(
+        "--now", action="store_true", help="set date to 'today'"
+    )
+    revenue_parser.add_argument(
+        "--yesterday",
+        action="store_true",
+        help="set date to yesterday",
+    )
+    revenue_parser.add_argument(
+        "--date",
+        type=valid_date,
+        nargs=1,
+        help="set date on specific date. Please enter date: yyyy-mm-dd",
+    )
+    revenue_parser.add_argument(
+        "--period",
+        type=valid_date,
+        nargs=2,
+        help="choose period, [date1] - [date2], including both dates. Please enter dates: yyyy-mm-dd",
+    )
+    revenue_parser.set_defaults(func=show_revenue)
 
     args = parser.parse_args()
     print(args)

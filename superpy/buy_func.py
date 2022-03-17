@@ -37,4 +37,4 @@ def buy_product(args):
                     "expiration_date": args.expiration_date.date(),
                 }
             )
-    print(f"product bought: {args.product_name}")
+    print(f"product bought: {args.product_name[0]}")

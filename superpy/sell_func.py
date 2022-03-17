@@ -67,7 +67,6 @@ def sell_item(args):
         else:
             for item in available_products:
                 exp_date_obj = string_to_dateobj(item["expiration_date"])
-                print(type(exp_date_obj))
                 if exp_date_obj == today_date_obj:
                     # pas de korting toe en voeg een 'sell price' key toe aan je dict.
                     item["sell_price"] = round(args.sell_price[0] * 0.65, 2)
@@ -96,6 +95,8 @@ def sell_item(args):
 
             csv_writer = csv.DictWriter(sold_file, fieldnames=fieldnames)
             csv_writer.writerows(products_to_sell[: args.amount_item])
+
+            print(f'you have sold {args.product_name[0]} for {item["sell_price"]}')
             # voeg de hele lijst toe aan je csv, rekening houdend met amount sell items of product
 
 
