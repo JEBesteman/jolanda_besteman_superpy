@@ -62,7 +62,7 @@ def short_inventory(args):
         for key, value in inventory.items():
             csv_writer.writerow({"product_name": key, "count": value})
 
-    table = Table(title="Short inventory for {datum}")
+    table = Table(title=f"Short inventory for {datum}")
 
     table.add_column("Product name", style="magenta")
     table.add_column("Current stock", justify="right", style="green")

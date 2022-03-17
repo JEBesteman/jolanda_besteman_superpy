@@ -83,32 +83,28 @@ def main():
         type=int,
         default=1,
         choices=range(1, 4),
-        help="set amount of sold product (default: 1) and maximum of 3",
+        help="set amount of sold product (default: 1)",
     )
     sell_parser.set_defaults(func=sell_item)
-
-    ## extra parent_parser --> dates; now, yesterday, date
-    date_parent_parser = subparsers.add_parser("date", add_help=False)
-    date_parent_parser.add_argument(
-        "--now", action="store_true", help="set date to 'today'"
-    )
-    date_parent_parser.add_argument(
-        "--yesterday",
-        action="store_true",
-        help="set date to yesterday",
-    )
-    date_parent_parser.add_argument(
-        "--date",
-        type=valid_date,
-        nargs=1,
-        help="set date to specific date. Please enter date: yyyy-mm-dd",
-    )
 
     # parser for short_inventory
     short_inventory_parser = subparsers.add_parser(
         "short_inventory",
-        parents=[date_parent_parser],
         description="this is a short inventory, [product_name] [count]",
+    )
+    short_inventory_parser.add_argument(
+        "--now", action="store_true", help="set date for short inventory to 'today'"
+    )
+    short_inventory_parser.add_argument(
+        "--yesterday",
+        action="store_true",
+        help="set date for short inventory to yesterday",
+    )
+    short_inventory_parser.add_argument(
+        "--date",
+        type=valid_date,
+        nargs=1,
+        help="set date of short inventory on specific date. Please enter date: yyyy-mm-dd",
     )
     short_inventory_parser.add_argument(
         "--txt", action="store_true", help="exports to txt.file"
@@ -118,8 +114,21 @@ def main():
     # parser for long_inventory
     long_inventory_parser = subparsers.add_parser(
         "long_inventory",
-        parents=[date_parent_parser],
         description="this is a long inventory with all the information of product",
+    )
+    long_inventory_parser.add_argument(
+        "--now", action="store_true", help="set date for long inventory to 'today'"
+    )
+    long_inventory_parser.add_argument(
+        "--yesterday",
+        action="store_true",
+        help="set date for long inventory to yesterday",
+    )
+    long_inventory_parser.add_argument(
+        "--date",
+        type=valid_date,
+        nargs=1,
+        help="set date of long inventory on specific date. Please enter date: yyyy-mm-dd",
     )
     long_inventory_parser.add_argument(
         "--txt", action="store_true", help="exports to txt.file"
@@ -138,8 +147,21 @@ def main():
     # parser for revenue
     revenue_parser = subparsers.add_parser(
         "revenue",
-        parents=[date_parent_parser],
         description="shows revenue for date or period",
+    )
+    revenue_parser.add_argument(
+        "--now", action="store_true", help="set date to 'today'"
+    )
+    revenue_parser.add_argument(
+        "--yesterday",
+        action="store_true",
+        help="set date to yesterday",
+    )
+    revenue_parser.add_argument(
+        "--date",
+        type=valid_date,
+        nargs=1,
+        help="set date on specific date. Please enter date: yyyy-mm-dd",
     )
     revenue_parser.add_argument(
         "--period",
@@ -152,8 +174,19 @@ def main():
     # parser for profit
     profit_parser = subparsers.add_parser(
         "profit",
-        parents=[date_parent_parser],
         description="shows profit for date or period",
+    )
+    profit_parser.add_argument("--now", action="store_true", help="set date to 'today'")
+    profit_parser.add_argument(
+        "--yesterday",
+        action="store_true",
+        help="set date to yesterday",
+    )
+    profit_parser.add_argument(
+        "--date",
+        type=valid_date,
+        nargs=1,
+        help="set date on specific date. Please enter date: yyyy-mm-dd",
     )
     profit_parser.add_argument(
         "--period",
