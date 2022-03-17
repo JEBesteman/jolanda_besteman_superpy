@@ -51,15 +51,19 @@ def get_expenses(args):
 
 """
 alles omvattende functie profit """
+# datum today, yesterday meengeven?
 
 
 def get_profit(args):
     total_profit = show_revenue(args, type_report="profit") - get_expenses(args)
     profit = round(total_profit, 2)
+
     if args.now:
-        print(f"The profit for today is {profit}")
+        datum = change_day(0)
+        print(f"The profit for {datum} is {profit}")
     if args.yesterday:
-        print(f"The profit for yesterday is {profit}")
+        datum = change_day(-1)
+        print(f"The profit for {datum} is {profit}")
     if args.date:
         print(f"The profit for {args.date[0].date()} is {profit}")
     if args.period:
