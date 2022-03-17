@@ -106,6 +106,9 @@ def main():
         nargs=1,
         help="set date of short inventory on specific date. Please enter date: yyyy-mm-dd",
     )
+    short_inventory_parser.add_argument(
+        "--txt", action="store_true", help="exports to txt.file"
+    )
     short_inventory_parser.set_defaults(func=short_inventory)
 
     # parser for long_inventory
@@ -126,6 +129,9 @@ def main():
         type=valid_date,
         nargs=1,
         help="set date of long inventory on specific date. Please enter date: yyyy-mm-dd",
+    )
+    long_inventory_parser.add_argument(
+        "--txt", action="store_true", help="exports to txt.file"
     )
     long_inventory_parser.set_defaults(func=long_inventory)
 

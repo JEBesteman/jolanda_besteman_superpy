@@ -8,10 +8,11 @@ I make 2 versions of inventiory:
         Show all product information, sorted on product_name
 """
 import csv
+from rich.console import Console
+from rich.table import Table
 from date_func import string_to_dateobj, change_day
 from sell_func import get_bought_items, get_sold_ids
 
-from pprint import pprint
 
 # krijg je alle producten die op bepaalde datum gekocht zijn, maar niet verkocht en niet verlopen
 # datetime.date object mee gegeven
@@ -53,7 +54,6 @@ def short_inventory(args):
             inventory[product["product_name"]] += 1
         else:
             inventory.update({product["product_name"]: 1})
-    pprint(inventory)
 
     with open((f"short_inventory_{datum}.csv"), "w", newline="") as short_file:
         fieldnames = ["product_name", "count"]
@@ -61,6 +61,20 @@ def short_inventory(args):
         csv_writer.writeheader()
         for key, value in inventory.items():
             csv_writer.writerow({"product_name": key, "count": value})
+
+    table = Table(title="Short inventory for {datum}")
+
+    table.add_column("Product name", style="magenta")
+    table.add_column("Current stock", justify="right", style="green")
+
+    for key, value in inventory.items():
+        table.add_row(key, str(value))
+
+    console = Console(record=True)
+    console.print(table)
+
+    if args.txt:
+        console.save_text(f"short_inventory_{datum}.txt")
 
 
 # all information of product in inventory
@@ -72,7 +86,7 @@ def long_inventory(args):
     if args.yesterday:
         datum = change_day(-1)
     products = get_available_products(datum)
-    pprint(products)
+
     with open((f"long_inventory_{datum}.csv"), "w", newline="") as long_file:
         fieldnames = [
             "product_id",
@@ -85,3 +99,28 @@ def long_inventory(args):
         csv_writer = csv.DictWriter(long_file, fieldnames)
         csv_writer.writeheader()
         csv_writer.writerows(products)
+
+    table = Table(title=f"long inventory for {datum}")
+
+    table.add_column("Product ID", justify="right", style="green")
+    table.add_column("Product name", style="magenta")
+    table.add_column("buy price", justify="right", style="green")
+    table.add_column("amount", justify="right", style="green")
+    table.add_column("buy date", justify="right", style="green")
+    table.add_column("expiration date", justify="right", style="green")
+
+    for item in products:
+        table.add_row(
+            item["product_id"],
+            item["product_name"],
+            item["buy_price"],
+            item["amount"],
+            item["buy_date"],
+            item["expiration_date"],
+        )
+
+    console = Console(record=True)
+    console.print(table)
+
+    if args.txt:
+        console.save_text(f"long_inventory_{datum}.txt")

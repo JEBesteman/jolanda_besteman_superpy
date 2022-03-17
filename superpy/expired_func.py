@@ -1,6 +1,9 @@
 import csv
+from rich.console import Console
+from rich.table import Table
 from sell_func import get_bought_items, get_sold_ids
 from date_func import string_to_dateobj, get_date_today
+
 
 today = get_date_today()
 
@@ -43,5 +46,19 @@ def show_expired_products(args):
         csv_writer = csv.DictWriter(exp_file, fieldnames=fieldnames)
         csv_writer.writeheader()
         csv_writer.writerows(expired_products)
+
+    table = Table(title=f"Expired products till {today}")
+
+    table.add_column("Product ID")
+    table.add_column("Product name", style="magenta")
+    table.add_column("Expiration date", justify="right", style="green")
+
+    for item in expired_products:
+        table.add_row(item["product_id"], item["product_name"], item["expiration_date"])
+
+    console = Console(record=True)
+    console.print(table)
+
     if args.txt:
         print("txt file created")
+        console.save_text("expired.txt")
