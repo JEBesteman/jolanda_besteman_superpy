@@ -1,11 +1,12 @@
 """
-This are all functions needed to create the inventory of "today"/now, yesterday and on speicific date
+Here are all functions needed to create the inventory of "today"/now, yesterday and on speicific date
 I reuse some functions of sell_func.py, to get bougth_items, and sold_ids
 I make 2 versions of inventiory:
     - short_inventory: product_name, count
         Show only how many items of product available are
     - long_inventory:
         Show all product information, sorted on product_name
+Uses parameter "day" as a datetime.date object 
 """
 import csv
 from rich.console import Console
@@ -14,9 +15,7 @@ from date_func import string_to_dateobj, change_day
 from sell_func import get_bought_items, get_sold_ids
 
 
-# krijg je alle producten die op bepaalde datum gekocht zijn, maar niet verkocht en niet verlopen
-# datetime.date object mee gegeven
-def get_available_products(datum):
+def get_available_products(day):
     bought_items = get_bought_items()
     sold_ids = get_sold_ids()
     available_products = []
@@ -25,8 +24,8 @@ def get_available_products(datum):
         buy_date_obj = string_to_dateobj(item["buy_date"])
         if (
             item["product_id"] not in sold_ids
-            and buy_date_obj <= datum
-            and exp_date_obj >= datum
+            and buy_date_obj <= day
+            and exp_date_obj >= day
         ):
             available_products.append(item)
 
@@ -41,13 +40,13 @@ def get_available_products(datum):
 
 # short_inventory: which product are in stock and how many
 def short_inventory(args):
-    if args.now is True:
-        datum = change_day(0)
+    if args.now:
+        day = change_day(0)
     if args.date:
-        datum = args.date[0].date()
+        day = args.date[0].date()
     if args.yesterday:
-        datum = change_day(-1)
-    products = get_available_products(datum)
+        day = change_day(-1)
+    products = get_available_products(day)
     inventory = {}
     for product in products:
         if product["product_name"] in inventory.keys():
@@ -55,14 +54,14 @@ def short_inventory(args):
         else:
             inventory.update({product["product_name"]: 1})
 
-    with open((f"short_inventory_{datum}.csv"), "w", newline="") as short_file:
+    with open((f"short_inventory_{day}.csv"), "w", newline="") as short_file:
         fieldnames = ["product_name", "count"]
         csv_writer = csv.DictWriter(short_file, fieldnames=fieldnames)
         csv_writer.writeheader()
         for key, value in inventory.items():
             csv_writer.writerow({"product_name": key, "count": value})
 
-    table = Table(title=f"Short inventory for {datum}")
+    table = Table(title=f"Short inventory for {day}")
 
     table.add_column("Product name", style="magenta")
     table.add_column("Current stock", justify="right", style="green")
@@ -74,20 +73,20 @@ def short_inventory(args):
     console.print(table)
 
     if args.txt:
-        console.save_text(f"short_inventory_{datum}.txt")
+        console.save_text(f"short_inventory_{day}.txt")
 
 
 # all information of product in inventory
 def long_inventory(args):
-    if args.now is True:
-        datum = change_day(0)
+    if args.now:
+        day = change_day(0)
     if args.date:
-        datum = args.date[0].date()
+        day = args.date[0].date()
     if args.yesterday:
-        datum = change_day(-1)
-    products = get_available_products(datum)
+        day = change_day(-1)
+    products = get_available_products(day)
 
-    with open((f"long_inventory_{datum}.csv"), "w", newline="") as long_file:
+    with open((f"long_inventory_{day}.csv"), "w", newline="") as long_file:
         fieldnames = [
             "product_id",
             "product_name",
@@ -100,7 +99,7 @@ def long_inventory(args):
         csv_writer.writeheader()
         csv_writer.writerows(products)
 
-    table = Table(title=f"long inventory for {datum}")
+    table = Table(title=f"long inventory for {day}")
 
     table.add_column("Product ID", justify="right", style="green")
     table.add_column("Product name", style="magenta")
@@ -123,4 +122,4 @@ def long_inventory(args):
     console.print(table)
 
     if args.txt:
-        console.save_text(f"long_inventory_{datum}.txt")
+        console.save_text(f"long_inventory_{day}.txt")

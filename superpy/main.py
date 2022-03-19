@@ -67,19 +67,19 @@ def main():
         "--amount",
         type=int,
         default=1,
-        help="set amount of bought product (default: 1)",
+        choices=range(1, 11),
+        help="set amount of bought product (default: 1) with maximum of 10 items",
     )
     buy_parser.set_defaults(func=buy_product)
 
     ## argparser for sell
-    ##product_name, sell_price, amount(optional, default 1), can sell max 3 items at once!!
     sell_parser = subparsers.add_parser("sell")
     sell_parser.add_argument("product_name", nargs=1, help="set product name")
     sell_parser.add_argument(
         "sell_price", type=float, nargs=1, help="set product sell price"
     )
     sell_parser.add_argument(
-        "--amount_item",
+        "--amount",
         type=int,
         default=1,
         choices=range(1, 4),
@@ -87,7 +87,7 @@ def main():
     )
     sell_parser.set_defaults(func=sell_item)
 
-    ## extra parent_parser --> dates; now, yesterday, date
+    # extra parent_parser --> dates; now, yesterday, date
     date_parent_parser = subparsers.add_parser("date", add_help=False)
     date_parent_parser.add_argument(
         "--now", action="store_true", help="set date to 'today'"
@@ -145,7 +145,7 @@ def main():
         "--period",
         type=valid_date,
         nargs=2,
-        help="choose period, [date1] - [date2], including both dates. Please enter dates: yyyy-mm-dd",
+        help="choose period, [day1] - [day2], including both dates. Please enter dates: yyyy-mm-dd",
     )
     revenue_parser.set_defaults(func=show_revenue)
 
@@ -159,12 +159,12 @@ def main():
         "--period",
         type=valid_date,
         nargs=2,
-        help="choose period, [date1] - [date2], including both dates. Please enter dates: yyyy-mm-dd",
+        help="choose period, [day1] - [day2], including both dates. Please enter dates: yyyy-mm-dd",
     )
     profit_parser.set_defaults(func=get_profit)
 
     args = parser.parse_args()
-    print(args)
+    # print(args)
 
     if args.func:
         args.func(args)
