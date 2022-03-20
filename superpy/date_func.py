@@ -9,7 +9,7 @@ def date_now(args):
         print(f"This is the real-time date of 'today': {date_today}")
 
 
-# advanced-time
+# advance-time
 def advance_time(args):
     with open("date_file.txt", "r") as date_file:
         for line in date_file:

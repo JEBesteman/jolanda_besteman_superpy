@@ -8,6 +8,7 @@ I make 2 versions of inventiory:
         Show all product information, sorted on product_name
 Uses parameter "day" as a datetime.date object 
 """
+
 import csv
 from rich.console import Console
 from rich.table import Table
@@ -61,10 +62,10 @@ def short_inventory(args):
         for key, value in inventory.items():
             csv_writer.writerow({"product_name": key, "count": value})
 
-    table = Table(title=f"Short inventory for {day}")
+    table = Table(title=f"Short inventory for {day}", show_lines=True)
 
     table.add_column("Product name", style="magenta")
-    table.add_column("Current stock", justify="right", style="green")
+    table.add_column("Current stock", justify="center")
 
     for key, value in inventory.items():
         table.add_row(key, str(value))
@@ -99,14 +100,14 @@ def long_inventory(args):
         csv_writer.writeheader()
         csv_writer.writerows(products)
 
-    table = Table(title=f"long inventory for {day}")
+    table = Table(title=f"long inventory for {day}", show_lines=True)
 
-    table.add_column("Product ID", justify="right", style="green")
+    table.add_column("Product ID", justify="right")
     table.add_column("Product name", style="magenta")
-    table.add_column("buy price", justify="right", style="green")
-    table.add_column("amount", justify="right", style="green")
-    table.add_column("buy date", justify="right", style="green")
-    table.add_column("expiration date", justify="right", style="green")
+    table.add_column("Buy price", justify="right")
+    table.add_column("Amount", justify="right", style="blue")
+    table.add_column("Buy date", justify="center", style="green")
+    table.add_column("Expiration date", justify="center", style="yellow")
 
     for item in products:
         table.add_row(

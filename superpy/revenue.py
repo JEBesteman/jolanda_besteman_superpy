@@ -1,5 +1,5 @@
 """
-Create 2 functions: revenue for (specific) date, revenue for period (2 dates)
+There are 2 functions: revenue for (specific) date, revenue for period (2 dates)
 uses parameters now(today), yesterday, date of revenue_parser
 or period and day1 and day2 of revenue_parser
 """
@@ -11,7 +11,7 @@ from date_func import string_to_dateobj, change_day
 def get_revenue_date(day):
     with open("sold.csv", "r") as sold_file:
         csv_reader = csv.DictReader(sold_file)
-        revenue = 0.00
+        revenue = 0
         for line in csv_reader:
             sell_date = string_to_dateobj(line["sell_date"])
             if sell_date == day:
@@ -22,7 +22,7 @@ def get_revenue_date(day):
 def get_revenue_between_dates(day1, day2):
     with open("sold.csv", "r") as sold_file:
         csv_reader = csv.DictReader(sold_file)
-        revenue = 0.00
+        revenue = 0
         for line in csv_reader:
             sell_date = string_to_dateobj(line["sell_date"])
             if sell_date >= day1 and sell_date <= day2:

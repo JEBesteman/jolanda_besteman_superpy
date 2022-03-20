@@ -47,11 +47,11 @@ def show_expired_products(args):
         csv_writer.writeheader()
         csv_writer.writerows(expired_products)
 
-    table = Table(title=f"Expired products till {today}")
+    table = Table(title=f"Expired products till {today}", show_lines=True)
 
-    table.add_column("Product ID")
+    table.add_column("Product ID", justify="right")
     table.add_column("Product name", style="magenta")
-    table.add_column("Expiration date", justify="right", style="green")
+    table.add_column("Expiration date", justify="center", style="yellow")
 
     for item in expired_products:
         table.add_row(item["product_id"], item["product_name"], item["expiration_date"])

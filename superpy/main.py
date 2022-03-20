@@ -1,6 +1,7 @@
 # Imports
 import argparse
 from datetime import datetime
+import textwrap
 from buy_func import buy_product
 from date_func import advance_time, date_now
 from sell_func import sell_item
@@ -26,36 +27,71 @@ def main():
             msg = "Not a valid date: '{0}'.".format(date_str)
             raise argparse.ArgumentTypeError(msg)
 
-    ## argparse gedeelte ####
+    ### argparse gedeelte ####
     parser = argparse.ArgumentParser(
-        description="Superpy supermarkt begint!", prog="SuperPy"
+        prog="SuperPy",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        description=textwrap.dedent(
+            """
+        Welcome to SuperPy supermarket inventory tool!!
+
+        Choose one of the subcommands below:
+        <<date_now>>            change 'system-today' to real-time today
+        <<advance_time>>        set 'today' to a specific date in future or past 
+        <<buy>>                 buy product
+        <<sell>>                sell product
+        <<short_inventory>>     show short inventory 
+        <<long_inventory>>      show long inventory
+        <<expired>>             show all expired products to 'today'
+        <<revenue>>             report/print revenue
+        <<profit>>              report/print profit
+
+        For more information about the subcommands, check <<subcommand>> -h
+        """,
+        ),
     )
     parser.set_defaults(func=None)
 
     subparsers = parser.add_subparsers(
-        help="Kies 1 van onderstande mogelijkheden:", dest="subparser_name"
+        dest="subparser_name",
     )
     # parser for real-time today
-    date_now_parser = subparsers.add_parser("date_now")
+    date_now_parser = subparsers.add_parser(
+        "date_now",
+        description="Change the 'system'-date or reset date to real-time 'today'",
+    )
     date_now_parser.add_argument(
         "date_now",
-        help="zet de systeem-date om in de realtime-date",
+        help="change date to real-time today",
         action="store_true",
     )
     date_now_parser.set_defaults(func=date_now)
 
     # parser for advance time
-    advance_time_parser = subparsers.add_parser("advance_time")
+    advance_time_parser = subparsers.add_parser(
+        "advance_time",
+        description="Set 'today' to specific date in future or past",
+    )
     advance_time_parser.add_argument(
         "advance_time",
-        help="zet aantal dagen terug (-) of verder in tijd: advance_time [aantal dagen].",
+        help="set 'today' to a date in future or past: advance_time [number of days]",
         nargs=1,
         type=int,
     )
     advance_time_parser.set_defaults(func=advance_time)
 
     # parser for buy_product
-    buy_parser = subparsers.add_parser("buy")
+    buy_parser = subparsers.add_parser(
+        "buy",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        description=textwrap.dedent(
+            """
+        Buying product:
+        Amount: default 1 and maxmimum of 10
+        Syntax: buy [product_name] [price] [expiration_date] --amount [number or items]
+        """
+        ),
+    )
     buy_parser.add_argument("product_name", nargs=1, help="set product name")
     buy_parser.add_argument("price", type=float, nargs=1, help="set product buy price")
     buy_parser.add_argument(
@@ -73,7 +109,17 @@ def main():
     buy_parser.set_defaults(func=buy_product)
 
     ## argparser for sell
-    sell_parser = subparsers.add_parser("sell")
+    sell_parser = subparsers.add_parser(
+        "sell",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        description=textwrap.dedent(
+            """
+        Selling product:
+        Amount: default 1 and maxmimum of 3
+        Syntax: buy [product_name] [price] --amount [number or items]
+        """
+        ),
+    )
     sell_parser.add_argument("product_name", nargs=1, help="set product name")
     sell_parser.add_argument(
         "sell_price", type=float, nargs=1, help="set product sell price"
@@ -108,7 +154,7 @@ def main():
     short_inventory_parser = subparsers.add_parser(
         "short_inventory",
         parents=[date_parent_parser],
-        description="this is a short inventory, [product_name] [count]",
+        description="This is a short inventory; product_name and current stock",
     )
     short_inventory_parser.add_argument(
         "--txt", action="store_true", help="exports to txt.file"
@@ -119,7 +165,7 @@ def main():
     long_inventory_parser = subparsers.add_parser(
         "long_inventory",
         parents=[date_parent_parser],
-        description="this is a long inventory with all the information of product",
+        description="This is a long inventory with all the information of product",
     )
     long_inventory_parser.add_argument(
         "--txt", action="store_true", help="exports to txt.file"
@@ -128,7 +174,7 @@ def main():
 
     # parser for show_expired_products
     expired_parser = subparsers.add_parser(
-        "expired", description="shows the expired products till 'today'"
+        "expired", description="Shows the expired products till 'today'"
     )
     expired_parser.add_argument(
         "--txt", action="store_true", help="exports to txt.file"
@@ -139,13 +185,13 @@ def main():
     revenue_parser = subparsers.add_parser(
         "revenue",
         parents=[date_parent_parser],
-        description="shows revenue for date or period",
+        description="Shows revenue for date or period",
     )
     revenue_parser.add_argument(
         "--period",
         type=valid_date,
         nargs=2,
-        help="choose period, [day1] - [day2], including both dates. Please enter dates: yyyy-mm-dd",
+        help="choose period, [date1] - [date2], including both dates. Please enter dates: yyyy-mm-dd",
     )
     revenue_parser.set_defaults(func=show_revenue)
 
@@ -153,13 +199,13 @@ def main():
     profit_parser = subparsers.add_parser(
         "profit",
         parents=[date_parent_parser],
-        description="shows profit for date or period",
+        description="Shows profit for date or period",
     )
     profit_parser.add_argument(
         "--period",
         type=valid_date,
         nargs=2,
-        help="choose period, [day1] - [day2], including both dates. Please enter dates: yyyy-mm-dd",
+        help="choose period, [date1] - [date2], including both dates. Please enter dates: yyyy-mm-dd",
     )
     profit_parser.set_defaults(func=get_profit)
 

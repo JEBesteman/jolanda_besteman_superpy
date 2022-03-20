@@ -1,0 +1,158 @@
+Welcome to my SuperPy supermarket inventory tool.
+
+You can buy products and add them to your inventory. 
+Also you can sell products from your inventory.
+Because so much food is wasted, there is a discount of 35% on the sell price,
+when the expiration date of a product is 'today' to promote selling this products.
+This will be automatically done!
+You can show a report of products that are expired till 'today'.
+Also there are reports of revenue or profit available.
+
+FIRST THING TO DO/KNOW:
+
+This program is tested with Python 3.10 and Rich 12.0.0 and with Windows.
+I think Python 3.9 is also working, because I don't have used specific 3.10 features.
+If you don't have Rich installed, then you need to install Rich before starting the program.
+You can install Rich with this command:
+pip install rich
+More information: https://pypi.org/project/rich/
+
+SECOND THING TO DO/KNOW:
+After you have cloned the directory/program on your computer and opened it in a shell, you have to go to the superpy directory, before entering the commands.
+You can do this with: cd superpy
+
+Note:
+All dates are in format: yyyy-mm-dd.
+And SuperPy uses 'today' as reference.
+
+
+TIME:
+
+You can set the 'system date' to the real-time today with:
+python main.py date_now
+
+You can set 'today' to specific date with number of days in future or past:
+python main.py advance_time [number of days]
+
+Example:
+python main.py date_now		
+python main.py advance_time 7   # 7 days forward
+python main.py advance_time -2  # 2 days backward
+
+During the program you can check what the date of 'today' is:
+python main.py advance_time 0
+
+You can also reset 'today' to real-time today after using advance time:
+python main.py date_now
+
+
+BUY:
+
+You can use 'buy' with a maximum of 10 items of a product. 
+Product name, price and expiration date are mandatory, amount not and is by default 1.
+The purchase date is automatically 'today'.
+When the purchase is done correctly, the product will be added to the bought.csv file
+
+python main.py buy [product name] [price] [expiration date] --amount [number items]
+
+Example:
+python main.py buy apple 0.25 2022-03-31                # buy 1 apple for 0.25
+python main.py buy yoghurt 0.89 2022-04-10 --amount 3   # buy 3 items of yoghurt for 0.89 each
+
+
+SELL:
+
+You can use 'sell' with a maximum of 3 items of a product. 
+Product name and price are mandatory, amount not and is by default 1.
+The sell date is automatically 'today'.
+When the sell is done correctly, the product will be added to the sold.csv file
+When there is not enough items of the product in the inventory, you get a message how many items there are available.
+
+python main.py sell [product name] [price] --amount [number items]
+
+Example:
+
+python main.py sell yoghurt 1.99 --amount 2
+python main.py sell apple 0.45 
+
+
+SHORT INVENTORY:
+
+You can show a short inventory; only the product names and the current stock of these products will be shown.
+Also there will be a short_inventory file created in csv format.
+You can choose:
+    --now               'today'
+    --yesterday         yesterday
+    --date [date]       choose a specific date: yyyy-mm-dd
+You can also additionally choose to export this inventory to a txt.file:
+    --txt
+
+Example:
+python main.py short_inventory --now
+python main.py short_inventory --yesterday
+python main.py short_inventory --date 2022-03-19
+python main.py short_inventory --now --txt          # csv and txt.file
+
+
+LONG INVENTORY:
+
+You can show a long version of inventory, all the information of products in the inventory will be shown.
+Also there will be a long_inventory file created in csv format.
+You can choose:
+    --now               'today'
+    --yesterday         yesterday
+    --date [date]       choose a specific date: yyyy-mm-dd
+You can also additionally choose to export this inventory to a txt.file:
+    --txt
+
+Example:
+python main.py long_inventory --now
+python main.py long_inventory --yesterday
+python main.py long_inventory --date 2022-03-19
+python main.py long_inventory --yesterday --txt
+
+
+EXPIRED PRODUCTS:
+
+You can show all the expired products till 'today' with some information of products.
+A expired.csv file will be created. 
+You can also additionally export to txt.file:
+    --txt
+
+Example:
+python main.py expired 
+python main.py expired --txt
+
+
+REVENUE:
+
+You can show a report/print of the revenue.
+You can choose:
+    --now                   	'today'
+    --yesterday             	yesterday
+    --date [date]           	choose a specific date: yyyy-mm-dd
+    --period [date1] [date2]  	choose a period between date1 and including date2: yyyy-mm-dd
+
+Example:
+python main.py revenue --now
+python main.py revenue --yesterday
+python main.py revenue --date 2022-03-14
+python main.py revenue --period 2022-03-01 2022-03-18
+
+
+PROFIT:
+
+You can show a report/print of the profit.
+You can choose:
+    --now                   	'today'
+    --yesterday             	yesterday
+    --date [date]           	choose a specific date: yyyy-mm-dd
+    --period [date1] [date2]  	choose a period between date1 and including date2: yyyy-mm-dd
+
+Example:
+python main.py profit --now
+python main.py profit --yesterday
+python main.py profit --date 2022-03-14
+python main.py profit --period 2022-03-01 2022-03-18
+
+HAVE FUN WITH SUPERPY!!
