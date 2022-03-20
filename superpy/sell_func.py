@@ -88,5 +88,5 @@ def sell_item(args):
             csv_writer.writerows(products_to_sell[: args.amount])
 
             print(
-                f'you have sold {args.amount} items of {args.product_name[0]} for {item["sell_price"]} each'
+                f'Sold: {args.amount} item(s) of {args.product_name[0]} for {item["sell_price"]} each'
             )

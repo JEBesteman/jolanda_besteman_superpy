@@ -25,6 +25,10 @@ Note:
 All dates are in format: yyyy-mm-dd.
 And SuperPy uses 'today' as reference.
 
+HELP:
+
+python main.py -h
+python main.py <subcommand> -h
 
 TIME:
 

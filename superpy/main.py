@@ -36,17 +36,17 @@ def main():
         Welcome to SuperPy supermarket inventory tool!!
 
         Choose one of the subcommands below:
-        <<date_now>>            change 'system-today' to real-time today
-        <<advance_time>>        set 'today' to a specific date in future or past 
-        <<buy>>                 buy product
-        <<sell>>                sell product
-        <<short_inventory>>     show short inventory 
-        <<long_inventory>>      show long inventory
-        <<expired>>             show all expired products to 'today'
-        <<revenue>>             report/print revenue
-        <<profit>>              report/print profit
+        <date_now>            change 'system-today' to real-time today
+        <advance_time>        set 'today' to a specific date in future or past 
+        <buy>                 buy product
+        <sell>                sell product
+        <short_inventory>     show short inventory 
+        <long_inventory>      show long inventory
+        <expired>             show all expired products to 'today'
+        <revenue>             report/print revenue
+        <profit>              report/print profit
 
-        For more information about the subcommands, check <<subcommand>> -h
+        For more information about the subcommands, check <subcommand> -h
         """,
         ),
     )
