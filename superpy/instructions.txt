@@ -33,7 +33,7 @@ python main.py <subcommand> -h
 TIME:
 
 You can set the 'system date' to the real-time today with:
-python main.py date_now
+python main.py set_date_now
 
 You can set 'today' to specific date with number of days in future or past:
 python main.py advance_time [number of days]
@@ -47,12 +47,12 @@ During the program you can check what the date of 'today' is:
 python main.py advance_time 0
 
 You can also reset 'today' to real-time today after using advance time:
-python main.py date_now
+python main.py set_date_now
 
 
 BUY:
 
-You can use 'buy' with a maximum of 10 items of a product. 
+You can use 'buy':
 Product name, price and expiration date are mandatory, amount not and is by default 1.
 The purchase date is automatically 'today'.
 When the purchase is done correctly, the product will be added to the bought.csv file

@@ -1,7 +1,7 @@
 from datetime import date, timedelta, datetime
 
 # date of "realtime-now"
-def date_now(args):
+def set_date_now(args):
     today = date.today()
     date_today = datetime.strftime(today, "%Y-%m-%d")
     with open("date_file.txt", "w") as date_file:

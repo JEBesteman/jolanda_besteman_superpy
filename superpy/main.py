@@ -3,7 +3,7 @@ import argparse
 from datetime import datetime
 import textwrap
 from buy_func import buy_product
-from date_func import advance_time, date_now
+from date_func import advance_time, set_date_now
 from sell_func import sell_item
 from inventory_func import short_inventory, long_inventory
 from expired_func import show_expired_products
@@ -33,20 +33,20 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description=textwrap.dedent(
             """
-        Welcome to SuperPy supermarket inventory tool!!
+        WELCOME TO SUPERPY supermarket inventory tool!!
 
-        Choose one of the subcommands below:
-        <date_now>            change 'system-today' to real-time today
-        <advance_time>        set 'today' to a specific date in future or past 
-        <buy>                 buy product
-        <sell>                sell product
-        <short_inventory>     show short inventory 
-        <long_inventory>      show long inventory
-        <expired>             show all expired products to 'today'
-        <revenue>             report/print revenue
-        <profit>              report/print profit
+        CHOOSE ONE OF THE SUBCOMMANDS BELOW:
+        For more information about these subcommands, check <subcommand> -h
 
-        For more information about the subcommands, check <subcommand> -h
+        <set_date_now>          change 'system-today' to real-time today: yyyy-mm-dd
+        <advance_time>          set 'today' to a specific date in future or past 
+        <buy>                   buy product
+        <sell>                  sell product
+        <short_inventory>       show short inventory; product name and current stock
+        <long_inventory>        show long inventory with all information of product
+        <expired>               show all expired products till 'today'
+        <revenue>               report/print revenue
+        <profit>                report/print profit
         """,
         ),
     )
@@ -56,16 +56,16 @@ def main():
         dest="subparser_name",
     )
     # parser for real-time today
-    date_now_parser = subparsers.add_parser(
-        "date_now",
+    set_date_now_parser = subparsers.add_parser(
+        "set_date_now",
         description="Change the 'system'-date or reset date to real-time 'today'",
     )
-    date_now_parser.add_argument(
+    set_date_now_parser.add_argument(
         "date_now",
         help="change date to real-time today",
         action="store_true",
     )
-    date_now_parser.set_defaults(func=date_now)
+    set_date_now_parser.set_defaults(func=set_date_now)
 
     # parser for advance time
     advance_time_parser = subparsers.add_parser(
@@ -87,7 +87,7 @@ def main():
         description=textwrap.dedent(
             """
         Buying product:
-        Amount: default 1 and maxmimum of 10
+        Amount: default 1
         Syntax: buy [product_name] [price] [expiration_date] --amount [number or items]
         """
         ),
@@ -103,8 +103,7 @@ def main():
         "--amount",
         type=int,
         default=1,
-        choices=range(1, 11),
-        help="set amount of bought product (default: 1) with maximum of 10 items",
+        help="set amount of bought product (default: 1)",
     )
     buy_parser.set_defaults(func=buy_product)
 
